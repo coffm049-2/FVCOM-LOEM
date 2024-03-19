@@ -48,14 +48,14 @@
 #========== TOPDIR ========================================================
 # TOPDIR is the directory in which this make file and the fvcom source reside
 
-           TOPDIR        = 
+           TOPDIR        =/work/GLHABS/LakeOntario/ccoffman/FVCOM-LOEM/src 
 #EXAMPLE
 # TOPDIR = /home/user/cchen/FVCOM_source
 # TOPDIR must be set!
 #========== INSTALLDIR =====================================================
 # INSTALLDIR is the directory where you wish to install external libraries
 # The default is in the $(TOPDIR)/libs/install, but you can choose...
-            INSTALLDIR    = $(TOPDIR)/libs/install
+            INSTALLDIR    = /work/GLHABS/LakeOntario/ccoffman/FVCOM-LOEM/src/libs/install
 #===========================================================================
 # PREPROCESSOR OPTIONS FOR CPP
 #            DEF_FLAGS     = -P -C -traditional 
@@ -70,18 +70,18 @@ empty=
 dashI= $(empty) -I
 dashL= $(empty) -L
 # ### UNCOMMENT HERE!
-ifeq ($(origin LIBPATH), environment)
-  LIBDIR = -L$(subst $(colon),$(dashL),$(LIBPATH))
-endif
-ifeq ($(origin INCLUDEPATH), environment)
-  INCDIR = -I$(subst $(colon),$(dashI),$(INCLUDEPATH))
-endif
+# ifeq ($(origin LIBPATH), environment)
+#   LIBDIR = -L$(subst $(colon),$(dashL),$(LIBPATH))
+# endif
+# ifeq ($(origin INCLUDEPATH), environment)
+#   INCDIR = -I$(subst $(colon),$(dashI),$(INCLUDEPATH))
+# endif
 
 ###########################################################################
 
 # LOCAL INSTAL
-#             LIBDIR       =  -L$(INSTALLDIR)/lib
-#             INCDIR       =  -I$(INSTALLDIR)/include
+            LIBDIR       =  -L/work/GLHABS/LakeOntario/ccoffman/FVCOM-LOEM/src/libs/install/lib
+            INCDIR       =  -I/work/GLHABS/LakeOntario/ccoffman/FVCOM-LOEM/src/libs/install/include
 
 
 #--------------------------------------------------------------------------
@@ -100,9 +100,13 @@ endif
 #--------------------------------------------------------------------------
             FLAG_USE_NETCDF4     = -DUSE_NETCDF4
 #            FLAG_USE_COMPRESSION = -DUSE_COMPRESSION
-             IOLIBS       =  -lnetcdff -lnetcdf #-lhdf5_hl -lhdf5 -lz -lcurl -lm
+
+#### NEED TO UPDATE TO INTEL
+IOLIBS =  -L/usr/local/apps/pnetcdf-1.12.3/intel-21.4/lib -lpnetcdf -L/usr/local/apps/netcdf-4.9.2/intel-21.4/lib -lnetcdff -lnetcdf
+IOINCS = -I/usr/local/apps/pnetcdf-1.12.3/intel-21.4/include -I/usr/local/apps/netcdf-4.9.2/intel-21.4/include
+#             IOLIBS       =  -lnetcdff -lnetcdf #-lhdf5_hl -lhdf5 -lz -lcurl -lm
 #             IOLIBS       =  -lnetcdf #-L/hosts/mao/usr/medm/install/netcdf/3.6.3/em64t/lib -lnetcdf
-             IOINCS       =  #-I/hosts/mao/usr/medm/install/netcdf/3.6.3/em64t/include
+#             IOINCS       =  #-I/hosts/mao/usr/medm/install/netcdf/3.6.3/em64t/include
 #             IOLIBS       =  -L/usr/local/install/netcdf/gcc_ifort/3.6.2/lib  -lnetcdf
 #             IOINCS       =  -I/usr/local/install/netcdf/gcc_ifort/3.6.2/include
 ##             IOLIBS       = -L/usr/local/install/netcdf-4.4.1.1-with-fortran/lib -lnetcdff -lnetcdf
@@ -129,7 +133,7 @@ endif
 #            FLAG_1 =  -DDOUBLE_PRECISION 
 
 ## SINGLE PRECISION OUTPUT FOR VISIT
-            FLAG_1 =  -DDOUBLE_PRECISION -DSINGLE_OUTPUT
+#            FLAG_1 =  -DDOUBLE_PRECISION -DSINGLE_OUTPUT
 
 #--------------------------------------------------------------------------
 #        SPHERICAL          SELECT SPHERICAL COORDINATES FOR INTEGRATION
@@ -137,7 +141,7 @@ endif
 #                           UNCOMMENT TO SELECT SPHERICAL COORDINATES
 #--------------------------------------------------------------------------
 
-            FLAG_2 = -DSPHERICAL
+#            FLAG_2 = -DSPHERICAL
 
 #--------------------------------------------------------------------------
 #        FLOODYING/DRYING   INCLUDE WET/DRY TREATMENT OF DOMAIN
@@ -161,11 +165,11 @@ endif
 #         If using METIS 5 or above, uncomment FLAG_411 and read the file readme_metis in folder METIS_source for detail
 	     FLAG_411 = -DMETIS_5
 #        If FLAG_411 is defined, uncomment path below	     
-             PARLIB = 
+#            PARLIB = 
 #             PARTINCS = -I/usr/local/install/metis-5.1.0/gcc-4.4.7/include
 #             PARTLIBS = -L/usr/local/install/metis-5.1.0/gcc-4.4.7/lib -lmetis
 #        If FLAG_411 is not defined, uncomment path below
-#             PARLIB = -lmetis  #-L/usr/local/lib -lmetis
+             PARLIB = -lmetis  #-L/usr/local/lib -lmetis
 #             PARTINCS =
 #             PARTLIBS =
 
@@ -230,8 +234,8 @@ endif
 #   !!!!!! ONLY ONE OF THE FLAGS BELOW CAN BE AND MUST BE CHOSEN
 #--------------------------------------------------------------------------
 
-            FLAG_8 =  -DLIMITED_NO
-#            FLAG_8 =  -DLIMITED_1
+#           FLAG_8 =  -DLIMITED_NO
+            FLAG_8 =  -DLIMITED_1
 #            FLAG_8 =  -DLIMITED_2
 
 #--------------------------------------------------------------------------
@@ -296,7 +300,7 @@ endif
 #        diffusion and better shape preserving properties than the standard scheme. 
 #--------------------------------------------------------------------------
 
-            FLAG_44 = -DTVD
+#           FLAG_44 = -DTVD
 
 #--------------------------------------------------------------------------
 #        Using A fully multidimensional positive definite advection
@@ -305,7 +309,7 @@ endif
 #        Physics, 54, 325-362, 1984
 #--------------------------------------------------------------------------
 
-            FLAG_15 = -DMPDATA
+#           FLAG_15 = -DMPDATA
 
 #--------------------------------------------------------------------------
 #         Run Two-D Barotropic Mode Only
@@ -386,10 +390,10 @@ endif
 #--------------------------------------------------------------------------
 #       GENERAL BIOLOGICAL MODEL:    UNCOMMENT TO INCLUDE MODEL
 #-------------------------------------------------------------------------- 
-#            FLAG_25  = -DBioGen
+            FLAG_25  = -DBioGen
 #            FLAG_251 = -DOFFLINE_BIOLOGY
-#            BIOLIB   = -L$(TOPDIR)/BIO_source -lbiomodule
-#            BIOINCS  = -I$(TOPDIR)/BIO_source
+            BIOLIB   = -L/work/GLHABS/LakeOntario/ccoffman/FVCOM-LOEM/src/BIO_TP -lbiomodule
+            BIOINCS  = -I/work/GLHABS/LakeOntario/ccoffman/FVCOM-LOEM/src/BIO_TP
 
 
 #--------------------------------------------------------------------------
@@ -411,7 +415,7 @@ endif
 #         2. CALCULATE THE NET HEAT FLUX USING SOLAR HEATING MODULE                          
 #--------------------------------------------------------------------------
 
-#            FLAG_27 = -DHEATING_CALCULATED  
+            FLAG_27 = -DHEATING_CALCULATED  
 #            FLAG_27 = -DHEATING_SOLAR  
 
 #--------------------------------------------------------------------------
@@ -514,7 +518,7 @@ endif
 #       FOR A PARALLEL NETCDF VERSION -- improved by Jingkun Chen @ SYSU CHINA
 #--------------------------------------------------------------------------
 
-#             FLAG_80 = -DPIO
+             FLAG_80 = -DPIO
 
 #--------------------------------------------------------------------------
 #    NUOPC (The National Unified Operational Prediction Capability)
@@ -561,12 +565,12 @@ endif
 #--------------------------------------------------------------------------
 #  Intel Compiler Definitions
 #--------------------------------------------------------------------------
-#         CPP      = /usr/bin/cpp
-#         COMPFLAG = -DIFORT
-#         FC       = ifort
-#         CC       = icc
-#         CXX      = icc
-#         CFLAGS   = -O3
+         CPP      = /usr/bin/cpp
+         COMPFLAG = -DIFORT
+         FC       = mpiifort
+         CC       = mpiicc
+         CXX      = mpicxx
+         CFLAGS   = -O3 -fp-model precise
 #         DEBFLGS  = #-check all
 # Use 'OPT = -O0 -g' for fast compile to test the make 
 # Use 'OPT = -xP' for fast run on em64t (Hydra and Guppy)
@@ -580,19 +584,19 @@ endif
 #--------------------------------------------------------------------------
 #  Intel/MPI Compiler Definitions (SMAST)      
 #--------------------------------------------------------------------------
-         CPP      = /usr/bin/cpp
-         COMPFLAG = -DIFORT  
-         CC       = mpicc
-         CXX      = mpicxx
-         CFLAGS   = -O3 
-         FC       = mpif90
+#         CPP      = /usr/bin/cpp
+#         COMPFLAG = -DIFORT  
+#         CC       = mpicc
+#         CXX      = mpicxx
+#         CFLAGS   = -O3 
+#         FC       = mpif90
 #         DEBFLGS  = -check all -traceback
 # Use 'OPT = -O0 -g'  for fast compile to test the make 
 # Use 'OPT = -xP' for fast run on em64t (Hydra and Guppy)
 # Use 'OPT = -xN' for fast run on ia32 (Salmon and Minke)
 #         OPT      = -O0 -g
 #         OPT      = -axN -xN
-         OPT      = -O3
+#         OPT      = -O3
 
 # Do not set static for use with visit!
 #         VISOPT   = -Wl,--export-dynamic
